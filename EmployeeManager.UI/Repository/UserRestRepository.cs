@@ -1,39 +1,64 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
-using EmployeeManager.UI.Models.UserModels;
+using EmployeeManager.UI.Model.UserModels;
 
 namespace EmployeeManager.UI.Repository
 {
 	internal class UserRestRepository : IUserRepository
 	{
-		public async Task<IEnumerable<User>> GetUsersAsync()
-		{
-			await Task.Delay(3000).ConfigureAwait(false);
+		private const string usersUriString = "https://gorest.co.in/public-api/users";
 
-			return new List<User>
+		private readonly IRestService restService;
+
+		public UserRestRepository(IRestService restService)
+		{
+			this.restService = restService;
+		}
+
+		public async Task<UsersResponse> GetUsersAsync(int page)
+		{
+			var uriBuilder = new UriBuilder(usersUriString)
 			{
-				new User
-				{
-					Id = 1,
-					Name = "Gov. Dwaipayana Chopra",
-					Email = "chopra_gov_dwaipayana@ledner.io",
-					Gender = Gender.Male,
-					Status = UserStatus.Active,
-					CreatedAt = DateTimeOffset.Parse("2021-05-01T03:50:04.368+05:30"),
-					UpdatedAt = DateTimeOffset.Parse("2021-05-01T03:50:04.368+05:30")
-				},
-				new User
-				{
-					Id = 3,
-					Name = "Anshula",
-					Email = "anshula_ahluwalia_gov@brown.name",
-					Gender = Gender.Female,
-					Status = UserStatus.Active,
-					CreatedAt = DateTimeOffset.Parse("2021-05-01T03:50:04.402+05:30"),
-					UpdatedAt = DateTimeOffset.Parse("2021-05-01T11:04:33.250+05:30")
-				}
 			};
+
+			return await restService.PerformGetRequestAsync<UsersResponse>(uriBuilder.Uri);
+		}
+
+		public async Task<UsersResponse> GetUsersAsync(string searchTerm, int page)
+		{
+			var queryStringBuilder = new StringBuilder($"page={page}");
+
+			if (!string.IsNullOrEmpty(searchTerm))
+			{
+				queryStringBuilder.Append($"&name={searchTerm}");
+			}
+
+			var uriBuilder = new UriBuilder(usersUriString)
+			{
+				Query = queryStringBuilder.ToString()
+			};
+
+			return await restService.PerformGetRequestAsync<UsersResponse>(uriBuilder.Uri);
+		}
+
+		public async Task<IEnumerable<UserResponse>> GetAllUsersAsync()
+		{
+			var userResponses = new List<UserResponse>();
+			var page = 1;
+			PaginationResponse pagination;
+
+			do
+			{
+				var usersResponse = await GetUsersAsync(page).ConfigureAwait(false);
+
+				pagination = usersResponse.Meta.Pagination;
+				userResponses.AddRange(usersResponse.Data);
+			}
+			while (page++ < pagination.Pages);
+
+			return userResponses;
 		}
 	}
 }

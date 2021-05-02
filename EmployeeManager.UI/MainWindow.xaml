@@ -8,6 +8,12 @@
         Title="MainWindow" Height="450" Width="800">
 	<!--<userViews:UsersPage />-->
 	<Grid>
-		<DataGrid x:Name="userDataGrid" ItemsSource="{Binding}" />
+		<TextBox x:Name="searchTextBox" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" Height="20"/>
+		<Button x:Name="searchButton" Content="Search" HorizontalAlignment="Left" Margin="220,10,10,10" VerticalAlignment="Top" IsEnabled="False" />
+		<DataGrid x:Name="userDataGrid" ItemsSource="{Binding}" Margin="0,40,0,40" />
+		<Button x:Name="exportButton" Content="Export" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom"/>
+		<Button x:Name="previousButton" Content="Previous" HorizontalAlignment="Center" Margin="0,0,100,10" VerticalAlignment="Bottom" Width="50" IsEnabled="false" />
+		<TextBlock x:Name="currentPageTextBlock" HorizontalAlignment="Center" Margin="0,0,0,10" Text="{Binding}" TextWrapping="NoWrap" VerticalAlignment="Bottom"/>
+		<Button x:Name="nextButton" Content="Next" HorizontalAlignment="Center" Margin="100,0,0,10" VerticalAlignment="Bottom" Width="50" IsEnabled="False" />
 	</Grid>
 </Window>

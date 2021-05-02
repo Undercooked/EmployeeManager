@@ -1,9 +1,9 @@
 ﻿using System;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
-namespace EmployeeManager.UI.Models.UserModels
+namespace EmployeeManager.UI.Model.UserModels
 {
-	public class User
+	public class UserResponse
 	{
 		public int Id { get; set; }
 		
@@ -15,10 +15,10 @@ namespace EmployeeManager.UI.Models.UserModels
 		
 		public UserStatus Status { get; set; }
 		
-		[JsonProperty("created_at")]
+		[JsonPropertyName("created_at")]
 		public DateTimeOffset CreatedAt { get; set; }
 
-		[JsonProperty("updated_at")]
+		[JsonPropertyName("updated_at")]
 		public DateTimeOffset UpdatedAt { get; set; }
 	}
 }

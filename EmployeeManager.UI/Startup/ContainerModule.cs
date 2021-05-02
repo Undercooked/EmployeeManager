@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Net.Http;
+using AutoMapper;
 using EmployeeManager.UI.Mappers;
 using EmployeeManager.UI.Repository;
 using EmployeeManager.UI.Service;
@@ -14,7 +15,11 @@ namespace EmployeeManager.UI.Startup
 			Bind<MainWindow>().ToSelf();
 			Bind<UsersPage>().ToSelf();
 
-			Bind<IUserService>().To<UserService>();
+			Bind<HttpClient>().ToSelf().InSingletonScope();
+
+			Bind<IRestService>().To<RestService>();
+			Bind<IUserExportService>().To<UserExportService>();
+			Bind<IExportFormatService>().To<CsvExportFormatService>();
 
 			Bind<IUserRepository>().To<UserRestRepository>().InSingletonScope();
 

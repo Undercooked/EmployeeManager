@@ -1,4 +1,4 @@
-﻿namespace EmployeeManager.UI.Models.UserModels
+﻿namespace EmployeeManager.UI.Model.UserModels
 {
 	public enum Gender
 	{

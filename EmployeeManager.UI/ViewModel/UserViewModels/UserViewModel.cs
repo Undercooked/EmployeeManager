@@ -1,5 +1,5 @@
 ﻿using System;
-using EmployeeManager.UI.Models.UserModels;
+using EmployeeManager.UI.Model.UserModels;
 
 namespace EmployeeManager.UI.ViewModel.UserViewModels
 {
